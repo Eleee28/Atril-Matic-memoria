@@ -1,0 +1,77 @@
+\documentclass{MUXLaTeX} % Versión 1.0.1 - Pruebas Beta - Pascal 2024
+
+\usepackage{pgfgantt}
+\usepackage{float}
+\usepackage{tabularx}
+\usepackage{graphicx}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{pdfpages}
+
+
+
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+
+\addto\captionsspanish{%
+    \renewcommand{\tablename}{Tabla}
+    \renewcommand{\listtablename}{Índice de tablas}
+}
+
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+
+\usepackage{listings}
+\usepackage{fvextra}
+\usepackage{caption}
+
+\DefineVerbatimEnvironment{JSONLog}{Verbatim}{
+    fontsize=\footnotesize,
+    breaklines=true,
+    breakanywhere=true,
+    breaksymbolleft={},
+    breaksymbolright={},
+    frame=none
+}
+
+\newcommand{\jsoncaption}[2]{%
+    \begin{minipage}{\linewidth}
+        \captionof{lstlisting}{#1}
+        \label{#2}
+    \end{minipage}
+}
+
+\AtBeginDocument{%
+    \renewcommand{\lstlistingname}{Registro}
+}
+
+
+\begin{document}
+%%%%%%%%%%%%%%%% Elegir si / no (Minúsculas)
+\bajavision{no} % no disponible en versión 1.0.1
+\digital{no}
+\abstract{si}
+\indicetablas{si}
+\indicefiguras{si}
+
+%%%%%%%%%%%% PORTADA, ÍNDICE, RESUMEN
+\maquetacion
+{AtrilMatic, Aplicación web de atril inteligente} % TITULO
+{\autoria{Tim Matveev y Elena Juarrós}{Calificación final individual: ??}} % AUTORÍA
+{\direccion{Manuel Freire Morán}{no}{no}} % DIRIGIDO POR
+
+%%%%%%%%%%%% CAPÍTULOS
+
+\input{Capitulos/capitulo01.tex}
+\input{Capitulos/capitulo02.tex}
+\input{Capitulos/capitulo03.tex}
+\input{Capitulos/capitulo04.tex}
+\input{Capitulos/capitulo05.tex}
+\input{Chapters/capitulo1en}
+\input{Chapters/capitulo7en}
+%%%%%%%%%%%% BIBLIOGRAFÍA AUTOMÁTICA
+\bibliografia
+\cleardoublepage
+\appendix
+\input{Capitulos/apendices}
+\end{document}

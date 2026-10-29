@@ -1,0 +1,14 @@
+\selectlanguage{spanish}
+
+\newcommand{\capituloapendice}[2]{%
+    \refstepcounter{chapter}%
+    \chapter*{Apéndice \thechapter\\[0.5ex]#1}%
+    \phantomsection
+    \addcontentsline{toc}{chapter}{Apéndice \thechapter: #1}%
+    \markboth{Apéndice \thechapter: #1}{Apéndice \thechapter: #1}%
+    \label{#2}%
+}
+
+\capituloapendice{Cuestionario de evaluación}{ap:cuestionario}
+
+Este apéndice presenta ... 
