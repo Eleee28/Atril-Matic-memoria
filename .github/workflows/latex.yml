@@ -1,0 +1,50 @@
+name: Build LaTex PDFs
+
+on:
+  push:
+    paths:
+      - "**.tex"
+      - ".github/workflows/latex.yml"
+  workflow_dispatch:
+
+jobs:
+  build:
+    if: github.actor != 'gituhb-actions[bot]' # Para que no actue sobre los commits hechos por el workflow
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write # needed to push
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Debug file structure
+        run: find . -name "*.png" -o -name "*.jpg" | sort
+
+      - name: Compile LaTex files
+        uses: xu-cheng/latex-action@v4
+        with:
+          root_file: |
+            **/*.tex
+          textlive_version: latest
+          args: -pdf -interaction=nonstopmode -file-line-error
+      
+      - name: Upload PDFs
+        uses: actions/upload-artifact@v4
+        with:
+          name: compiled-pdfs
+          path: "**/*.pdf"
+
+      - name: Move PDFs to pdfs/
+        run: |
+          mkdir -p pdfs
+          find . -name "*.pdf" -exec mv {} pdfs/ \;
+
+      - name: Commit PDFs
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add pdfs/*.pdf || true
+          git commit -m "Auto-build PDFs" || echo "No changes to commit"
+          git push
