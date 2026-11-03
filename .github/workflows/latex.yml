@@ -9,7 +9,6 @@ on:
 
 jobs:
   build:
-    if: github.actor != 'gituhb-actions[bot]' # Para que no actue sobre los commits hechos por el workflow
     runs-on: ubuntu-latest
 
     permissions:
@@ -19,32 +18,28 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Debug file structure
-        run: find . -name "*.png" -o -name "*.jpg" | sort
-
-      - name: Compile LaTex files
+      - name: Compile LaTex
         uses: xu-cheng/latex-action@v4
         with:
-          root_file: |
-            **/*.tex
-          textlive_version: latest
+          root_file: main.tex
+          texlive_version: latest
           args: -pdf -interaction=nonstopmode -file-line-error
       
-      - name: Upload PDFs
+      - name: Upload PDF
         uses: actions/upload-artifact@v4
         with:
-          name: compiled-pdfs
-          path: "**/*.pdf"
+          name: compiled-pdf
+          path: main.pdf
 
-      - name: Move PDFs to pdfs/
+      - name: Move PDF to pdf/
         run: |
-          mkdir -p pdfs
-          find . -name "*.pdf" -exec mv {} pdfs/ \;
+          mkdir -p pdf
+          mv -f main.pdf pdf/
 
-      - name: Commit PDFs
+      - name: Commit PDF
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
-          git add pdfs/*.pdf || true
-          git commit -m "Auto-build PDFs" || echo "No changes to commit"
+          git add pdf/main.pdf
+          git commit -m "Auto-build PDF [skip ci]" || { echo "No changes to commit"; exit 0; }
           git push
