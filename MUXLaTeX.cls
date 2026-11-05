@@ -27,7 +27,7 @@
 \usepackage{todonotes}
 %\usepackage{hyphenat}
 %\hyphenpenalty=10000
-\usepackage[spanish]{babel}
+\usepackage[spanish,english]{babel}
 \usepackage{watermark}
 \usepackage[most]{tcolorbox}
 \newcommand{\digital}[1]{
@@ -104,9 +104,9 @@
 \newcommand{\abstract}[1]{
     \ifthenelse{\equal{#1}{si}}{
         \newcommand{\insercion}{
-            \input{Anexos/resumen.tex}
+			\input{Anexos/abstract.tex}
             \clearpage
-            \input{Anexos/abstract.tex}
+            \input{Anexos/resumen.tex}
         }
     }{
         \newcommand{\insercion}{}
@@ -182,7 +182,7 @@
 
 \titleformat{\chapter}[hang]
 {\Huge\bfseries\color{lechuga}}
-{\color{lechuga} Capítulo \thechapter. }
+{\color{lechuga} \chaptername\ \thechapter. }
 {0em}
 {}
 \titlespacing{\chapter}{0pt}{0pt}{0pt}
@@ -242,7 +242,7 @@
 \newcommand{\bibliografia}{
     \bibliographystyle{apalike}
     \bibliography{biblio}
-    \addcontentsline{toc}{chapter}{\textsf{\textbf{Bibliografía}}}
+    \addcontentsline{toc}{chapter}{\textsf{\textbf\bibname}}
 }
 \usepackage{emptypage}
 \usepackage[none]{hyphenat} % Desactiva la división de palabras
@@ -270,10 +270,10 @@
                     \Large
                     \vspace{0.3em}
                     \color{white}
-                    \textbf{Facultad de Informática}\phantom{a}\\
+                    \textbf{Facultad de Informática / Faculty of Computer Science ???}\phantom{a}\\
                     
                     \vspace{0.9em}
-                    \textbf{Trabajo de Fin de Grado}\phantom{a}
+                    \textbf{Trabajo de Fin de Grado / Bachelor's Thesis ???}\phantom{a}
                 \end{flushright}
             \begin{minipage}{20cm}
             \vspace*{-3.6cm}
@@ -294,7 +294,7 @@
             \newgeometry{right=0in, left=0in}
             \palitos
             \centering
-            \\ \Large Por\\ #2\\ \phantom{a}
+            \\ \Large Por/By???\\ #2\\ \phantom{a}
             \begin{minipage}{21cm}
             \vspace*{0.05\textwidth}
             \centering
@@ -305,9 +305,9 @@
         \vspace*{0.02\textwidth}
         \large
         \centering
-        \textit{Dirigido por}\\[0.7cm]
+        \textit{Dirigido por / Supervised by ???}\\[0.7cm]
         #3\\[0.5cm]
-        MADRID, 2025--2026
+        MADRID, 2026--2027
         
         
     \end{figure}  

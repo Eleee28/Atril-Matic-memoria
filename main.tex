@@ -8,15 +8,10 @@
 \usepackage{tabularx}
 \usepackage{pdfpages}
 
-
+\selectlanguage{english}
 
 \newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
 \newcolumntype{Y}{>{\raggedright\arraybackslash}X}
-
-\addto\captionsspanish{%
-    \renewcommand{\tablename}{Tabla}
-    \renewcommand{\listtablename}{Índice de tablas}
-}
 
 \usepackage{pgfplots}
 \pgfplotsset{compat=1.18}
@@ -42,7 +37,7 @@
 }
 
 \AtBeginDocument{%
-    \renewcommand{\lstlistingname}{Registro}
+    \renewcommand{\lstlistingname}{Log}
 }
 
 
@@ -56,8 +51,8 @@
 
 %%%%%%%%%%%% PORTADA, ÍNDICE, RESUMEN
 \maquetacion
-{AtrilMatic, Aplicación web de atril inteligente} % TITULO
-{\autoria{Tim Matveev y Elena Juarrós}{Calificación final individual: ??}} % AUTORÍA
+{AtrilMatic: A Web-based Smart Music Stand} % TITULO
+{\autoria{Tim Matveev y Elena Juarros}{Calificación final individual/Individual final grade: ??}} % AUTORÍA
 {\direccion{Manuel Freire Morán}{no}{no}} % DIRIGIDO POR
 
 %%%%%%%%%%%% CAPÍTULOS
@@ -67,8 +62,8 @@
 \input{Capitulos/capitulo03.tex}
 \input{Capitulos/capitulo04.tex}
 \input{Capitulos/capitulo05.tex}
-\input{Chapters/capitulo1en}
-\input{Chapters/capitulo7en}
+\input{Chapters/capitulo1es}
+\input{Chapters/capitulo7es}
 %%%%%%%%%%%% BIBLIOGRAFÍA AUTOMÁTICA
 \bibliografia
 \cleardoublepage
