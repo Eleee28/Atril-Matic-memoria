@@ -4,3 +4,6 @@
 *.toc
 *.lof
 *.lot
+main.fls
+main.fdb_latexmk
+main.pdf
