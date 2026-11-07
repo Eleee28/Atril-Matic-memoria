@@ -1,3 +1,28 @@
 \begin{thebibliography}{}
 
+\bibitem[Haas et~al., 2017]{haas2017bringing}
+Haas, A., Rossberg, A., Schuff, D.~L., Titzer, B.~L., Holman, M., Gohman, D., Wagner, L., Zakai, A., and Bastien, J.~F. (2017).
+\newblock Bringing the web up to speed with {WebAssembly}.
+\newblock In {\em Proceedings of the ACM SIGPLAN Conference on Programming Language Design and Implementation (PLDI)}, pages 185--200, Barcelona, Spain. ACM.
+
+\bibitem[Hilbig et~al., 2021]{hilbig2021empirical}
+Hilbig, A., Lehmann, D., and Pradel, M. (2021).
+\newblock An empirical study of real-world {WebAssembly} binaries: Security, languages, use cases.
+\newblock In {\em Proceedings of the Web Conference 2021 (WWW '21)}, pages 2696--2708, New York, NY, USA. ACM.
+
+\bibitem[Jung et~al., 2018]{jung2018rustbelt}
+Jung, R., Jourdan, J.-H., Krebbers, R., and Dreyer, D. (2018).
+\newblock {RustBelt}: Securing the foundations of the {Rust} programming language.
+\newblock {\em Proceedings of the ACM on Programming Languages}, 2(POPL):66:1--66:34.
+
+\bibitem[{Rust and WebAssembly Working Group}, 2026]{wasmbindgen}
+{Rust and WebAssembly Working Group} (2026).
+\newblock \texttt{wasm-bindgen}: Facilitating high-level interactions between {Wasm} modules and {JavaScript}.
+\newblock \url{https://github.com/rustwasm/wasm-bindgen}.
+\newblock Accessed 7 November 2026.
+
+\bibitem[Xu et~al., 2021]{xu2022memory}
+Xu, H., Chen, Z., Sun, M., Zhou, Y., and Lyu, M.~R. (2021).
+\newblock Memory-safety challenge considered solved? an in-depth study with all {Rust} {CVE}s.
+
 \end{thebibliography}

@@ -1,0 +1,65 @@
+% =====================================================================
+% references_wasm.bib
+% Entries for the "Why WebAssembly?" section (final-for-now version).
+% Lines starting with "% VERIFY" mark a field that was NOT confirmed
+% online and must be checked against the publisher's page.
+% =====================================================================
+
+% VERIFY: end page (185 confirmed as start page; 200 from memory)
+@inproceedings{haas2017bringing,
+  author    = {Haas, Andreas and Rossberg, Andreas and Schuff, Derek L. and Titzer, Ben L. and Holman, Michael and Gohman, Dan and Wagner, Luke and Zakai, Alon and Bastien, J. F.},
+  title     = {Bringing the Web up to Speed with {WebAssembly}},
+  booktitle = {Proceedings of the ACM SIGPLAN Conference on Programming Language Design and Implementation (PLDI)},
+  address   = {Barcelona, Spain},
+  publisher = {ACM},
+  year      = {2017},
+  pages     = {185--200},
+  doi       = {10.1145/3062341.3062363}
+}
+
+@inproceedings{hilbig2021empirical,
+  author    = {Hilbig, Aaron and Lehmann, Daniel and Pradel, Michael},
+  title     = {An Empirical Study of Real-World {WebAssembly} Binaries: Security, Languages, Use Cases},
+  booktitle = {Proceedings of the Web Conference 2021 (WWW '21)},
+  address   = {New York, NY, USA},
+  publisher = {ACM},
+  year      = {2021},
+  pages     = {2696--2708},
+  doi       = {10.1145/3442381.3450138}
+}
+
+@article{jung2018rustbelt,
+  author    = {Jung, Ralf and Jourdan, Jacques-Henri and Krebbers, Robbert and Dreyer, Derek},
+  title     = {{RustBelt}: Securing the Foundations of the {Rust} Programming Language},
+  journal   = {Proceedings of the ACM on Programming Languages},
+  volume    = {2},
+  number    = {POPL},
+  articleno = {66},
+  pages     = {66:1--66:34},
+  year      = {2018},
+  doi       = {10.1145/3158154}
+}
+
+% Only the arXiv version was verified. This paper also appeared in ACM
+% Transactions on Software Engineering and Methodology (TOSEM). Check the
+% ACM Digital Library and, if confirmed, replace this entry with a journal
+% article entry (journal, volume, number, article number, year, doi).
+% Keep the key xu2022memory so existing \cite commands keep working.
+@misc{xu2022memory,
+  author        = {Xu, Hui and Chen, Zhuangbin and Sun, Mingshen and Zhou, Yangfan and Lyu, Michael R.},
+  title         = {Memory-Safety Challenge Considered Solved? An In-Depth Study with All {Rust} {CVE}s},
+  year          = {2021},
+  eprint        = {2003.03296},
+  archiveprefix = {arXiv},
+  primaryclass  = {cs.PL},
+  url           = {https://arxiv.org/abs/2003.03296}
+}
+
+% Software documentation (not peer reviewed). Adjust the access date.
+@misc{wasmbindgen,
+  author       = {{Rust and WebAssembly Working Group}},
+  title        = {\texttt{wasm-bindgen}: Facilitating high-level interactions between {Wasm} modules and {JavaScript}},
+  howpublished = {\url{https://github.com/rustwasm/wasm-bindgen}},
+  year         = {2026},
+  note         = {Accessed 7 November 2026}
+}

@@ -6,6 +6,105 @@
 
 \section{Design}
 
+\subsection{Technical Challenges}
+
+It is important to commence by outlining the actual technological needs an
+application like Atril would require. Recognizing pitch dynamically from
+microphone input could, in general, be considered a resource-intensive and in
+some ways non-deterministic task for a computer to perform. It is clear that
+a system made to perform such a task should be capable of adjusting to
+different microphones as well as different noise levels, and of recognizing
+frequencies with a minimal margin of error. The fact that, in the case of
+this application, such a task would have to be performed dynamically and in
+real time would mean that it would prove to be even more challenging.
+Furthermore, there is a prediction or matching element that uses the pitch
+data produced by the recognition system to give the best possible estimate of
+the position of the player in accordance with the musical composition being
+played. It is important to highlight that this is probably where the biggest
+technological focus should be allocated when it comes to an application like
+Atril. The recognition and prediction logic will run multiple times a second
+while also having to be lightweight and easy to implement into the vast world
+of web development frameworks, languages, and established principles.
+
+\subsection{WebAssembly}
+
+This is precisely where WebAssembly comes in. WebAssembly is a bytecode that
+acts as a compilation target for many, usually low-level, programming
+languages, famously C, C++, Rust, and Go. It offers simple validation, fast
+compilation, and interoperability with the web platform, including direct
+access to JavaScript and Web APIs~\cite{haas2017bringing}.
+
+\subsection{Why WebAssembly?}
+\label{sec:why-webassembly}
+
+Although WebAssembly was initially widely adopted mostly as a platform for
+cryptomining, this has since become a marginalized minority, comprising less
+than 1\% of the binaries found on the web among the 8,461 WebAssembly
+binaries studied by the University of Stuttgart in their 2021 paper
+\textit{An Empirical Study of Real-World WebAssembly
+Binaries}~\cite{hilbig2021empirical}, showing a wide adoption of the format
+for a variety of use cases.
+
+WebAssembly as a compilation target for the note recognition and prediction
+system outlined earlier is a clear choice due to several important factors.
+Firstly, it offers a low-overhead means of execution that will not bog down
+or make the rest of the proposed application heavier. Additionally, it offers
+a compilation target for languages that are significantly faster than
+JavaScript, allowing the creation of a performant library that is still
+entirely interoperable with the web world and its systems via a simple API
+system. Finally, and importantly, WebAssembly is an abstraction over modern
+hardware, meaning that our application will still remain platform
+independent.
+
+\subsection{Limitations and Solutions}
+
+It is important to note the limitations of WebAssembly and the measures that
+can be taken to minimize their impact. Hilbig et
+al.~\cite{hilbig2021empirical}, in their study of 8,461 real-world binaries,
+found that ``vulnerabilities that propagate from insecure source languages
+potentially affect a wide range of binaries (e.g., two thirds of the binaries
+are compiled from memory unsafe languages, such as C and C++)''. This matters
+because WebAssembly's built-in safeguards do not neutralize such bugs. The
+choice of source language, and its safety, is therefore crucial when
+developing a WebAssembly system.
+
+\subsection{Rust and WebAssembly}
+
+Among the languages commonly compiled to
+WebAssembly, Rust is the strongest candidate with respect to memory safety.
+Rust's compiler enforces ownership and borrowing: a value has one owner, and
+there can be either one mutable reference or many shared ones, never both.
+For safe Rust, this rules out data races and invalid memory accesses, a
+property that has been formally proven in machine-checked form for a
+realistic subset of the language and for several core standard-library
+abstractions~\cite{jung2018rustbelt}. Importantly, this is achieved without
+garbage collection, whereas languages such as Go rely on runtime memory
+checking and garbage collection~\cite{xu2022memory}. Rust's guarantees
+therefore come largely from compile-time analysis rather than runtime
+overhead, which is essential for a real-time audio application.
+
+\subsection{WebAssembly Compilation Process}
+
+What follows is a small explanation of the WebAssembly compilation process,
+sufficient to understand the functionality of our system. In our case, Rust
+uses the LLVM intermediate representation, allowing a single intermediate
+representation to be compiled to a variety of different targets. In this
+case, LLVM has a WebAssembly target that converts the intermediate
+representation given by the Low-Level Virtual Machine into a \texttt{.wasm}
+module, a compact, stack-based bytecode in which high-level Rust constructs
+such as structs and slices are lowered to a small set of primitive numeric
+types and offsets into a linear memory, and in which control flow is
+structured~\cite{haas2017bringing}. Because WebAssembly can only exchange
+numbers with JavaScript directly, a tool such as \texttt{wasm-bindgen}
+post-processes the module and generates the JavaScript and TypeScript glue
+code that translates richer types such as strings and objects across the
+boundary~\cite{wasmbindgen}. At load time, the browser engine validates the
+module against WebAssembly's type system before executing anything, which is
+what allows untrusted code to be run safely~\cite{haas2017bringing}. The
+format was designed to be fast to validate and compile, and the engine then
+translates it to machine code and runs it inside a sandbox that confines it
+to its own linear memory~\cite{haas2017bringing}.
+
 \subsection{System architecture overview}
 
 \subsection{Database design -- we dont have DB!}
