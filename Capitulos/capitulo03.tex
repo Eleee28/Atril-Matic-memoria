@@ -112,3 +112,186 @@ to its own linear memory~\cite{haas2017bringing}.
 \section{Implementation}
 
 \subsection{Backend and persistence}
+
+\section{Key Algorithms}
+\label{sec:key-algorithms}
+
+\todo[inline]{(Temporary) This section is a placeholder and will be expanded.}
+
+At the heart of detecting a pitch from time-domain data stands the Fast
+Fourier Transform (FFT). In this project, the FFT is provided by the
+\texttt{rustfft} crate~\cite{rustfft} and is combined with several
+self-implemented window functions, which are discussed further below. The FFT
+converts the time-domain data obtained from the microphone input into
+frequency-domain data, which is then used by the pitch detection algorithms,
+although some of them, such as the YIN algorithm, still work directly with
+time-domain data.
+
+\subsection{Fast Fourier Transform Algorithm}
+\label{subsec:fft}
+
+The Fourier transform is a mathematical operation that converts a signal,
+given as an amplitude through time, into a spectrum in which each frequency
+present in the signal is displayed together with its amplitude. It rests on
+the Fourier series, which states that a periodic signal $f(t)$ with period
+$T$ can be written as a sum of sine and cosine waves whose frequencies are
+integer multiples of the fundamental frequency $\omega_0 = 2\pi/T$:
+\begin{equation}
+  f(t) = \frac{a_0}{2} + \sum_{n=1}^{\infty}
+  \left[ a_n \cos(n\omega_0 t) + b_n \sin(n\omega_0 t) \right].
+  \label{eq:fourier-series}
+\end{equation}
+
+Essentially, the Fourier transform shows which frequencies make up a given
+signal and in which proportions. In effect, it determines how much of each
+sine and cosine wave is needed to reconstruct the signal. To find how much of
+frequency $F$ a signal contains, the signal is multiplied by a wave of
+frequency $F$ and the average is taken. If the signal contains that
+frequency, the product is mostly positive and the average is large.
+Otherwise, the positive and negative parts cancel and the average is near
+zero. Using a cosine copy and a sine copy makes the answer independent of the
+phase of the wave. For the series above, this is exactly how the coefficients
+are obtained:
+\begin{equation}
+  a_n = \frac{2}{T} \int_{0}^{T} f(t) \cos(n\omega_0 t)\, dt,
+  \qquad
+  b_n = \frac{2}{T} \int_{0}^{T} f(t) \sin(n\omega_0 t)\, dt.
+  \label{eq:fourier-coefficients}
+\end{equation}
+Repeating this for every frequency yields the spectrum.
+
+In practice, the microphone delivers a finite number $N$ of discrete samples
+$x_0, \dots, x_{N-1}$, so the discrete Fourier transform (DFT) is used. With
+the principal $N$th root of unity $W$ it can be written compactly
+as~\cite{cooley1965algorithm}
+\begin{equation}
+  X_k = \sum_{n=0}^{N-1} x_n \, W^{kn},
+  \qquad k = 0, 1, \dots, N-1,
+  \qquad W = e^{-2\pi i / N}.
+  \label{eq:dft}
+\end{equation}
+By Euler's formula,
+$W^{kn} = \cos(2\pi kn/N) - i\sin(2\pi kn/N)$, so
+Equation~\ref{eq:dft} multiplies the signal by a cosine copy and a sine copy
+and sums the result, which is the discrete counterpart of the averaging
+described above. Bin $k$ corresponds to the frequency $f_k = k f_s / N$,
+where $f_s$ is the sampling rate, and the magnitude $|X_k|$ gives the
+strength of that frequency in the signal.
+
+Evaluating Equation~\ref{eq:dft} directly requires on the order of $N^2$
+operations. The FFT is not a different transform but a fast way of computing
+this one: the algorithm of Cooley and Tukey needs, in their words, ``a number
+of operations proportional to $N \log N$ rather than $N^2$''%
+~\cite{cooley1965algorithm}. This difference is what makes it feasible to run
+the analysis several times per second on live microphone input. In the
+current implementation, the sample rate is 48\,kHz, the FFT and window sizes
+are 2048 samples, and the hop size is 512 samples, so a new spectrum is
+computed every 512 samples, approximately 94 times per second.
+
+\todo[inline]{Expand with the exact FFT implementation details.}
+
+\subsection{Window Functions}
+\label{subsec:win-func}
+
+When computing the FFT, the algorithm behaves as if it were being applied to
+a spectrum that repeats infinitely. A wave that is cut off at the edge of the
+block therefore creates a noticeable elevation in amplitude which skews the
+results. This phenomenon is called spectral leakage. To reduce it, different
+window functions are applied to the signal before the FFT is computed. The
+general idea behind all window functions is to fade the edges of the block,
+although this is achieved through different means. The error can be reduced
+by multiplying the block with a window function $w[n]$ that fades the signal
+towards zero at both ends before the transform is computed:
+\begin{equation}
+  y[n] = w[n]\, x[n], \qquad n = 0, 1, \dots, N-1.
+  \label{eq:windowed-signal}
+\end{equation}
+Every window is a compromise between two properties of its spectrum: the width
+of the main lobe, which determines how close two frequencies can be before
+they blur into one, and the height and decay of the side lobes, which
+determine how much a strong component leaks into its surroundings
+\cite{harris1978windows}. The four windows used in this project all belong to
+the family of cosine-sum windows,
+\begin{equation}
+  w[n] = \sum_{m=0}^{M} (-1)^m a_m \cos\!\left( \frac{2\pi m n}{N-1} \right),
+  \qquad n = 0, 1, \dots, N-1,
+  \label{eq:cosine-sum}
+\end{equation}
+and differ only in the number of terms and in the coefficients $a_m$.
+
+\subsubsection{Rectangular Window}
+
+The rectangular window does not modify the signal at all ($M=0$,
+$a_0=1$):
+\begin{equation}
+  w_{\mathrm{R}}[n] = 1.
+  \label{eq:rect}
+\end{equation}
+It has the narrowest main lobe of the four, so it separates close
+frequencies best, but its side lobes are the highest and decay slowly. It is
+only a good choice when the signal is guaranteed to be periodic within the
+block.
+
+\subsubsection{Hann Window}
+
+The Hann window is a single raised cosine ($M=1$, $a_0=a_1=0.5$) that
+reaches exactly zero at both ends of the block:
+\begin{equation}
+  w_{\mathrm{Hann}}[n] = 0.5 - 0.5 \cos\!\left( \frac{2\pi n}{N-1} \right).
+  \label{eq:hann}
+\end{equation}
+Because the block ends at zero, the repeated copies join smoothly, and the
+side lobes are low and fall off quickly. The price is a main lobe twice as
+wide as that of the rectangular window.
+
+\subsubsection{Hamming Window}
+
+The Hamming window uses the same shape with different coefficients
+($a_0=0.54$, $a_1=0.46$):
+\begin{equation}
+  w_{\mathrm{Hamming}}[n] = 0.54 - 0.46 \cos\!\left( \frac{2\pi n}{N-1} \right).
+  \label{eq:hamming}
+\end{equation}
+These are the commonly used rounded values of the coefficients. The window
+does not quite reach zero at the ends, which lowers the nearest side lobes
+further than the Hann window does, but a small discontinuity remains, so the
+distant side lobes decay slowly.
+
+\subsubsection{Blackman Window}
+
+The Blackman window adds a second cosine term ($M=2$, $a_0=0.42$,
+$a_1=0.5$, $a_2=0.08$):
+\begin{equation}
+  w_{\mathrm{Blackman}}[n] = 0.42 - 0.5 \cos\!\left( \frac{2\pi n}{N-1} \right)
+  + 0.08 \cos\!\left( \frac{4\pi n}{N-1} \right).
+  \label{eq:blackman}
+\end{equation}
+It gives the lowest leakage of the four and its side lobes fall off quickly,
+at the cost of the widest main lobe. It is useful when a weak component has to
+be found next to a much stronger one.
+
+\subsubsection{Comparison}
+
+Table~\ref{tab:windows} summarizes the trade-off. The main lobe width is
+measured in FFT bins, where one bin corresponds to a frequency step of
+$f_s/N$. The coherent gain is the mean value of the window,
+$\frac{1}{N}\sum_{n=0}^{N-1} w[n]$; since the windowed signal is scaled by
+this factor, amplitudes read from the spectrum must be divided by it.
+\begin{table}[htbp]
+  \centering
+  \small
+  \begin{tabular}{lcccc}
+    \toprule
+    Window & Main lobe width & Highest side lobe & Side-lobe decay & Coherent gain \\
+           & (bins)          & (dB)              & (dB/octave)     &               \\
+    \midrule
+    Rectangular & 2 & $-13$ & 6  & 1.00 \\
+    Hann        & 4 & $-31$ & 18 & 0.50 \\
+    Hamming     & 4 & $-43$ & 6  & 0.54 \\
+    Blackman    & 6 & $-58$ & 18 & 0.42 \\
+    \bottomrule
+  \end{tabular}
+  \caption{Approximate properties of the four windows. The main lobe width is
+  the distance between the first nulls on both sides of the peak.}
+  \label{tab:windows}
+\end{table}
