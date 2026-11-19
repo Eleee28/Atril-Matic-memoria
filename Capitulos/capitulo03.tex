@@ -8,6 +8,11 @@
 
 \subsection{Technical Challenges}
 
+\todo[inline]{MFM - Use as direct and concise a language as posible: 
+It is important to commence by outlining the actual technological needs $\cdots$
+$\Rightarrow$ 
+We first present basic requirements $\cdots$ }
+
 It is important to commence by outlining the actual technological needs an
 application like Atril would require. Recognizing pitch dynamically from
 microphone input could, in general, be considered a resource-intensive and in
@@ -27,6 +32,9 @@ while also having to be lightweight and easy to implement into the vast world
 of web development frameworks, languages, and established principles.
 
 \subsection{WebAssembly}
+
+\todo[inline]{MFM - Avoid being chatty, and get to the point. 
+Be bold and direct: ``WebAssembly seems to be ideal for this task: ''}
 
 This is precisely where WebAssembly comes in. WebAssembly is a bytecode that
 acts as a compilation target for many, usually low-level, programming
@@ -85,6 +93,8 @@ overhead, which is essential for a real-time audio application.
 
 \subsection{WebAssembly Compilation Process}
 
+\todo[inline]{MFM - Pictures are said to be worth a thousand words. Get a picture of the process.}
+
 What follows is a small explanation of the WebAssembly compilation process,
 sufficient to understand the functionality of our system. In our case, Rust
 uses the LLVM intermediate representation, allowing a single intermediate
@@ -116,7 +126,7 @@ to its own linear memory~\cite{haas2017bringing}.
 \section{Key Algorithms}
 \label{sec:key-algorithms}
 
-\todo[inline]{(Temporary) This section is a placeholder and will be expanded.}
+\todo[inline]{MFM - A small primer on music theory (what is a note, what is a tone, octaves and log2 perception of frequencies) would greatly help here}
 
 At the heart of detecting a pitch from time-domain data stands the Fast
 Fourier Transform (FFT). In this project, the FFT is provided by the
@@ -188,6 +198,7 @@ current implementation, the sample rate is 48\,kHz, the FFT and window sizes
 are 2048 samples, and the hop size is 512 samples, so a new spectrum is
 computed every 512 samples, approximately 94 times per second.
 
+\todo[inline]{MFM - Do not include exact details. Refer instead to code (or provide a small, very readable example and specify where to find the rest).}
 \todo[inline]{Expand with the exact FFT implementation details.}
 
 \subsection{Window Functions}
