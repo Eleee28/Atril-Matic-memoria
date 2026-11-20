@@ -8,12 +8,9 @@
 
 \subsection{Technical Challenges}
 
-\todo[inline]{MFM - Use as direct and concise a language as posible: 
-It is important to commence by outlining the actual technological needs $\cdots$
-$\Rightarrow$ 
-We first present basic requirements $\cdots$ }
 
-It is important to commence by outlining the actual technological needs an
+
+We commence by outlining the actual technological needs an
 application like Atril would require. Recognizing pitch dynamically from
 microphone input could, in general, be considered a resource-intensive and in
 some ways non-deterministic task for a computer to perform. It is clear that
@@ -33,10 +30,7 @@ of web development frameworks, languages, and established principles.
 
 \subsection{WebAssembly}
 
-\todo[inline]{MFM - Avoid being chatty, and get to the point. 
-Be bold and direct: ``WebAssembly seems to be ideal for this task: ''}
-
-This is precisely where WebAssembly comes in. WebAssembly is a bytecode that
+WebAssembly seems to be ideal for this task. WebAssembly is a bytecode that
 acts as a compilation target for many, usually low-level, programming
 languages, famously C, C++, Rust, and Go. It offers simple validation, fast
 compilation, and interoperability with the web platform, including direct
@@ -126,7 +120,65 @@ to its own linear memory~\cite{haas2017bringing}.
 \section{Key Algorithms}
 \label{sec:key-algorithms}
 
-\todo[inline]{MFM - A small primer on music theory (what is a note, what is a tone, octaves and log2 perception of frequencies) would greatly help here}
+
+\subsection{A Small Primer on Music Theory and its Physics}
+
+Sound consists of pressure variations travelling through the air as a
+longitudinal wave~\cite[\S1.1, pp.~1--2]{benson2006music}, so it obeys the
+physics of waves. Much of music theory follows from this physics together
+with the particular way the human ear perceives such waves. We therefore
+start by relating the physical quantities of a sound to the musical
+attributes we perceive (Table~\ref{tab:sound-attributes}).
+
+\begin{table}[htbp]
+  \centering
+  \begin{tabular}{ll}
+    \toprule
+    Physical & Perceptual \\
+    \midrule
+    Amplitude & Loudness \\
+    Frequency & Pitch    \\
+    Spectrum  & Timbre   \\
+    Duration  & Length   \\
+    \bottomrule
+  \end{tabular}
+  \caption{Attributes of sound: physical quantities and the perceptual
+  attributes they correspond to. Adapted from
+  Benson~\cite[\S1.1, p.~2]{benson2006music}.}
+  \label{tab:sound-attributes}
+\end{table}
+
+A larger amplitude of the pressure variation is perceived as a louder
+sound, although perceived loudness also depends on frequency and is
+measured on a logarithmic scale~\cite[\S1.3, pp.~9--11]{benson2006music}.
+\emph{Pitch} is the perceived highness of a sound and corresponds
+to its frequency, measured in hertz~\cite[\S1.1, p.~2; \S1.3, p.~8]{benson2006music}.
+Perception is not identical to the physical signal: a pitch can be heard
+at a frequency that is not actually present in the waveform (the
+``missing fundamental'')~\cite[\S1.1, p.~2]{benson2006music}.
+
+A \emph{tone} is a sound with a definite pitch, while a \emph{note} is a
+named pitch in a musical system, such as A or C$\sharp$. In Western music
+the octave is divided into twelve equal steps called
+semitones~\cite[App.~M, p.~389]{benson2006music}. Two semitones make a
+\emph{whole tone}, and the same word is also used for the interval
+itself~\cite[App.~M, p.~389]{benson2006music}. Each semitone corresponds
+to a frequency ratio of $2^{1/12}$, so twelve of them multiply the
+frequency by exactly two.
+
+An \emph{octave} is a doubling of frequency, for example from 220\,Hz to
+440\,Hz~\cite[\S4.2, p.~137]{benson2006music}. Notes an octave apart are
+perceived as playing equivalent roles in harmony and share the same note
+name, a principle known as \emph{octave
+equivalence}~\cite[\S4.2, pp.~137--138; App.~M, p.~389]{benson2006music}.
+This is a consequence of the fact that our perception of musical distance
+is logarithmic in frequency: musical intervals add, while the
+corresponding frequency ratios multiply~\cite[\S5.4, p.~157]{benson2006music}.
+A pitch of frequency $f$ is therefore measured relative to a reference
+frequency $f_{\mathrm{ref}}$ by $\log_2(f/f_{\mathrm{ref}})$ octaves, or
+$1200\log_2(f/f_{\mathrm{ref}})$ cents~\cite[\S5.4, p.~158]{benson2006music}.
+
+\subsection{The algorithms used}
 
 At the heart of detecting a pitch from time-domain data stands the Fast
 Fourier Transform (FFT). In this project, the FFT is provided by the
@@ -199,7 +251,6 @@ are 2048 samples, and the hop size is 512 samples, so a new spectrum is
 computed every 512 samples, approximately 94 times per second.
 
 \todo[inline]{MFM - Do not include exact details. Refer instead to code (or provide a small, very readable example and specify where to find the rest).}
-\todo[inline]{Expand with the exact FFT implementation details.}
 
 \subsection{Window Functions}
 \label{subsec:win-func}
