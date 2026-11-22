@@ -10,19 +10,18 @@ Before starting with our own app, we felt that a way of gathering...
 was looking into already existing solutions in the market to see 
 what we liked or not...??? 
 
-This section reviews 4 applications that propose similar solutions to what 
-we wanted to do. The solutions analysed are: Tomplay, Oktav, Newzik and Enote.
+This section reviews 3 applications that propose similar solutions to what 
+we wanted to do. The solutions analysed are: Tomplay, Oktav and Newzik.
 
 \subsection{Tomplay}
 
-\href{https://tomplay.com/premium-trial?gad_source=1&gad_campaignid=20681880617&gbraid=0AAAAAo-e4fjXq4AZRRXMM05r5eK0yjHVm&gclid=Cj0KCQjw39zSBhDhARIsANammDsmFuFM7ntGvU3DPqh3FrSL8kvc7Ajf7szj5tN_ckixeMqOZiykEcoaAh4pEALw_wcB}{Tomplay}
-is a mobile and desktop app developed by Tomplay.
+\todo[inline]{Review why citations are not appearing.}
 
-\textit{maybe we can add here screenshot of the UI from the original web}
+Tomplay~\cite{tomplay} is a mobile and desktop app.
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.7\textwidth]{Images/tomplay.png}
+	\includegraphics[width=0.6\textwidth]{Images/tomplay.png}
 	\caption{Tomplay user interface.}
 	\label{fig:tomplay}
 \end{figure}
@@ -44,14 +43,16 @@ However, it presents some limitations:
 	\item 
 \end{itemize}
 
+\todo[inline]{Add some more limitations.}
+
+
 \subsection{OKTAV}
 
-\href{https://www.oktav.com/en/s/how-oktav-works}{OKTAV}
-is a web app developed by OKTAV.
+OKTAV~\cite{oktav} is a web app.
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.7\textwidth]{Images/oktav.png}
+	\includegraphics[width=0.4\textwidth]{Images/oktav.png}
 	\caption{Oktav user interface.}
 	\label{fig:oktav}
 \end{figure}
@@ -64,12 +65,59 @@ Its main features are:
 	\item \textbf{Digital piano}: See how to play a music sheet on a visual keyboard shown along the music sheet. 
 \end{itemize}
 
-However, it presents some limitations:
+Its limitations are:
 \begin{itemize}
 	\item Paid subscription
 	\item Only for piano, violin and cello
 	\item 
 \end{itemize}
 
+\subsection{Newzik}
+
+Newzik~\cite{newzik}
+is a web and mobile app.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.6\textwidth]{Images/newzik.png}
+	\caption{Newzik user interface.}
+	\label{fig:newzik}
+\end{figure}
+
+Its main features are:
+\begin{itemize}
+	\item \textbf{Organization}: Centralize your digital sheet music (PDFs, scans, sets).
+	\item \textbf{Play \& listen}: Listen to your sheet music with an AI that reads it for you.
+	\item \textbf{Annotate \& turn pages}: Highlight, add fingerings and markers, and turn pages hands-free using facial movements (or a Bluetooth pedal).
+\end{itemize}
+
+Its limitations are:
+\begin{itemize}
+	\item Paid subscription
+	\item Mobile app is only available for iOS
+	\item No real-time tracking, you need to use gestures or a pedal to turn pages
+\end{itemize}
 
 \section{Comparison with the proposed solution}
+
+Table~\ref{tab:existing-solutions} summarises the main characteristics of the solutions reviewed and our app.
+
+\todo[inline]{Fill in the table below}
+
+\begin{table}[H]
+	\centering
+	\begin{tabularx}{\textwidth}{l Y Y Y Y}
+		\toprule
+		\textbf{Feature} & \textbf{Tomplay} & \textbf{Oktav} & \textbf{Newzik} & \textbf{AtrilMatic} \\
+		\midrule
+		Platform			& Mobile and desktop	& Web 			& Web and iOS	& Web \\
+		Price				& Paid 					& Paid 			& Paid 			& Free \\
+		Score format		& Paid 					& Paid 			& Paid 			& PDF, MusicXML, XML \\
+		Real-time tracking	& Paid 					& Paid 			& Paid 			& Yes \\
+		Automatic page turn	& Paid 					& Paid 			& No 			& Yes \\
+		Performance stats	& Paid 					& Paid 			& Paid 			& Not for now \\
+		\bottomrule
+	\end{tabularx}
+	\caption{Comparison of existing solutions.}
+	\label{tab:existing-solutions}
+\end{table}
