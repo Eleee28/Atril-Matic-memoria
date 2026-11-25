@@ -31,17 +31,35 @@ Jung, R., Jourdan, J.-H., Krebbers, R., and Dreyer, D. (2018).
 \newblock {RustBelt}: Securing the foundations of the {Rust} programming language.
 \newblock {\em Proceedings of the ACM on Programming Languages}, 2(POPL):66:1--66:34.
 
-\bibitem[Mahler, 2026]{rustfft}
-Mahler, E. (2026).
-\newblock {RustFFT}: A mixed-radix {FFT} library written in pure {Rust}.
-\newblock \url{https://github.com/ejmahler/RustFFT}.
-\newblock Accessed 8 November 2026.
+\bibitem[Newzik, 2026]{newzik}
+Newzik (2026).
+\newblock Newzik.
+\newblock \url{https://newzik.com/en}.
+\newblock Accessed.
+
+\bibitem[Oktav, 2026]{oktav}
+Oktav (2026).
+\newblock Oktav.
+\newblock \url{https://www.oktav.com/en/s/how-oktav-works}.
+\newblock Accessed.
 
 \bibitem[{Rust and WebAssembly Working Group}, 2026]{wasmbindgen}
 {Rust and WebAssembly Working Group} (2026).
 \newblock \texttt{wasm-bindgen}: Facilitating high-level interactions between {Wasm} modules and {JavaScript}.
 \newblock \url{https://github.com/rustwasm/wasm-bindgen}.
 \newblock Accessed 7 November 2026.
+
+\bibitem[Tomplay, 2026]{tomplay}
+Tomplay (2026).
+\newblock Tomplay.
+\newblock \url{https://tomplay.com/premium-trial?gad_source=1&gad_campaignid=20681880617&gbraid=0AAAAAo-e4fjXq4AZRRXMM05r5eK0yjHVm&gclid=Cj0KCQjw39zSBhDhARIsANammDsmFuFM7ntGvU3DPqh3FrSL8kvc7Ajf7szj5tN_ckixeMqOZiykEcoaAh4pEALw_wcB}.
+\newblock Accessed.
+
+\bibitem[Welkie and Mahler, 2026]{rustfft}
+Welkie, A. and Mahler, E. (2026).
+\newblock {RustFFT}: high-performance {FFT} library written in {Rust}.
+\newblock \url{https://github.com/ejmahler/RustFFT}.
+\newblock Version 6.4.1. Accessed 8 November 2026.
 
 \bibitem[Xu et~al., 2021]{xu2022memory}
 Xu, H., Chen, Z., Sun, M., Zhou, Y., and Lyu, M.~R. (2021).

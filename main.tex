@@ -17,8 +17,35 @@
 \pgfplotsset{compat=1.18}
 
 \usepackage{listings}
+\usepackage{xcolor}
+\usepackage{tikz}
 \usepackage{fvextra}
 \usepackage{caption}
+
+\lstdefinelanguage{Rust}{
+  keywords={fn,let,mut,unsafe,if,else,while,for,in,const,impl,self,Self,
+            as,use,pub,struct,trait,type,where,return},
+  keywordstyle=\color{blue!60!black}\bfseries,
+  ndkeywords={Vec,Arc,Complex,usize,f32,f64},
+  ndkeywordstyle=\color{teal!70!black},
+  comment=[l]{//},
+  commentstyle=\color{gray}\itshape,
+  morestring=[b]",
+  stringstyle=\color{orange!70!black},
+  sensitive=true
+}
+\lstdefinestyle{rustcode}{
+  language=Rust,
+  basicstyle=\ttfamily\footnotesize,
+  numbers=left, numberstyle=\tiny\color{gray}, numbersep=8pt,
+  frame=single, rulecolor=\color{black!25},
+  backgroundcolor=\color{black!2},
+  breaklines=true, columns=fullflexible, keepspaces=true,
+  showstringspaces=false, tabsize=2, upquote=false,
+  xleftmargin=1.5em, framexleftmargin=1.5em,
+  escapechar=|
+}
+\newcommand{\cn}[1]{\tikz[baseline=(c.base)]\node[circle,draw,inner sep=0.7pt,font=\tiny\bfseries](c){#1};}
 
 \DefineVerbatimEnvironment{JSONLog}{Verbatim}{
     fontsize=\footnotesize,
@@ -31,13 +58,10 @@
 
 \newcommand{\jsoncaption}[2]{%
     \begin{minipage}{\linewidth}
+        \renewcommand{\lstlistingname}{Log}
         \captionof{lstlisting}{#1}
         \label{#2}
     \end{minipage}
-}
-
-\AtBeginDocument{%
-    \renewcommand{\lstlistingname}{Log}
 }
 
 
