@@ -46,9 +46,33 @@ that are not in the score, skips rests and stops at the end of the score.
 \todo[inline]{Add table comparing configurations, link to algorithms section, 
 maybe a screenshot of test bench}
 
+[Table with the configurations compared] The algorithms are FFT peak, FFT peak 
+with harmonics, HPS, HPS with harmonics and YIN 
+(Section~\ref{sec:key-algorithms}), combined with the windows of Section~\ref{subsec:win-fun}.
+
+
 \subsection{Metrics}
 
-\todo[inline]{table explaining the metrics used}
+\begin{table}[H]
+	\centering
+	\begin{tabularx}{\textwidth}{l Y}
+		\toprule
+		\textbf{Metric}					& \textbf{Definition} \\
+		\midrule
+		Note accuracy					& Notes whose most frequent detection is the expected note. \\
+		Window accuracy					& Analysis windows that detect the expected note. \\
+		Precision, recall, F1			& Per expected note, averaged over notes. \\
+		Detection rate					& Notes where any pitch was detected. \\
+		Mean / median error 			& Absolute pitch error, in cents [cite]. \\
+		Within $\pm$10 / $\pm$50 cents 	& Notes detected within that error. \\
+		Octave error rate				& Right pitch class, wrong octave. \\
+		\bottomrule
+	\end{tabularx}
+	\caption{Metrics used in the technical evaluation.}
+	\label{tab:metrics}
+\end{table}
+
+\todo{add citation here for cents}
 
 \subsection{Results}
 
