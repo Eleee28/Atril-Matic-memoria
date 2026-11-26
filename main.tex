@@ -8,6 +8,11 @@
 \usepackage{tabularx}
 \usepackage{pdfpages}
 
+\raggedbottom % El espacio sobrante queda en blanco al final de la pagina y no se reparte entre los bullets
+
+\usepackage{enumitem}
+\setlist{itemsep=0.2em, parsep=0pt, topsep=0.4em} % mismo espaciado para todas las listas
+
 \selectlanguage{english}
 
 \newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
