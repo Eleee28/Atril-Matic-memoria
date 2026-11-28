@@ -2,22 +2,36 @@
 
 \section{Introduction}
 
+This chapter summarises the technologies AtrilMatic builds on. It also 
+reviews existing applications that help musicians practise with digital 
+scores and compares them with our proposal.
+
 \section{Technological foundations}
+
+\todo[inline]{Add references to each technology}
+
+AtrilMatic is built on three pieces:
+\begin{itemize}
+	\item MusicXML, an open format for representing scores [cite]
+	\item OpenSheetMusicDisplay, a library that renders MusicXML in the browser [cite]
+	\item WebAssembly, which lets the pitch detection, written in Rust, run in the browser at near-native speed
+\end{itemize}
+
+Section~\ref{sec:why-webassembly} explains the choice of WebAssembly, and 
+Section~\ref{sec:key-algorithms} describes the signal processing algorithms.
 
 \section{Existing solutions}
 
-Before starting with our own app, we felt that a way of gathering... 
-was looking into already existing solutions in the market to see 
-what we liked or not...??? 
-
-This section reviews 3 applications that propose similar solutions to what 
-we wanted to do. The solutions analysed are: Tomplay, Oktav and Newzik.
+Before designing AtrilMatic, we reviewed some applications already on the market. 
+We wanted to identify useful features and the gaps our proposal could fill.
+ The solutions we analysed are: Tomplay, Oktav and Newzik.
 
 \subsection{Tomplay}
 
 \todo[inline]{Review why citations are not appearing.}
 
-Tomplay~\cite{tomplay} is a mobile and desktop app.
+Tomplay~\cite{tomplay} is a mobile and desktop app that offers interactive 
+scores with professional accompaniments.
 
 \begin{figure}[H]
 	\centering
@@ -39,16 +53,12 @@ Its main features are:
 However, it presents some limitations:
 \begin{itemize}
 	\item Paid subscription
-	\item 
-	\item 
+	\item Scores are limited to its own catalog, users cannot import their own
 \end{itemize}
 
-\todo[inline]{Add some more limitations.}
+\subsection{Oktav}
 
-
-\subsection{OKTAV}
-
-OKTAV~\cite{oktav} is a web app.
+Oktav~\cite{oktav} is a web app focused on piano and string players.
 
 \begin{figure}[H]
 	\centering
@@ -69,13 +79,13 @@ Its limitations are:
 \begin{itemize}
 	\item Paid subscription
 	\item Only for piano, violin and cello
-	\item 
+	\item Autoscroll follows a fixed tempo, it does not listen to the musician
 \end{itemize}
 
 \subsection{Newzik}
 
-Newzik~\cite{newzik}
-is a web and mobile app.
+Newzik~\cite{newzik} is a web and mobile app for managing and annotating a 
+personal sheet music library.
 
 \begin{figure}[H]
 	\centering
@@ -108,16 +118,18 @@ Table~\ref{tab:existing-solutions} summarises the main characteristics of the so
 	\centering
 	\begin{tabularx}{\textwidth}{l Y Y Y Y}
 		\toprule
-		\textbf{Feature} & \textbf{Tomplay} & \textbf{Oktav} & \textbf{Newzik} & \textbf{AtrilMatic} \\
+		\textbf{Feature} 	& \textbf{Tomplay} 			& \textbf{Oktav} 	& \textbf{Newzik} 		& \textbf{AtrilMatic} \\
 		\midrule
-		Platform			& Mobile and desktop	& Web 			& Web and iOS	& Web \\
-		Price				& Paid 					& Paid 			& Paid 			& Free \\
-		Score format		& Paid 					& Paid 			& Paid 			& PDF, MusicXML, XML \\
-		Real-time tracking	& Paid 					& Paid 			& Paid 			& Yes \\
-		Automatic page turn	& Paid 					& Paid 			& No 			& Yes \\
-		Performance stats	& Paid 					& Paid 			& Paid 			& Not for now \\
+		Platform			& Mobile, desktop			& Web 				& Web, iOS				& Web \\
+		Price				& Paid 						& Paid 				& Paid 					& Free \\
+		Upload scores		& No (app catalog) 			& ? 				& Yes (PDF) 			& Yes (PDF, MusicXML, XML) \\
+		Real-time tracking	& Yes (note-by-note mode) 	& No 				& No 					& Yes \\
+		Automatic page turn	& Yes 						& Yes (fixed tempo) & No (gestures, pedal) 	& Yes \\
 		\bottomrule
 	\end{tabularx}
 	\caption{Comparison of existing solutions.}
 	\label{tab:existing-solutions}
 \end{table}
+
+AtrilMatic is the only free option that follows the musician in real time on their own scores, 
+with the audio processed locally in the browser.

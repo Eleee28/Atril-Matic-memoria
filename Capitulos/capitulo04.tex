@@ -1,15 +1,101 @@
 \chapter{Evaluation}
+\label{chap:evaluation}
 
-\subsection{Objectives / goals ??}
+The evaluation has two parts, a technical evaluation of pitch detection 
+and score following, and a user evaluation.
+
+\section{Objectives}
+
+\begin{itemize}
+	\item Measure how accurately each pitch detection algorithm identifies notes.
+	\item Find the configuration (algorithm, window, FFT size) that works best.
+	\item Check that the cursor follows the musician correctly.
+	\item Assess the usability of the applicatin with real users.
+\end{itemize}
+
+\section{Technical evaluation}
+
+\subsection{Test environment}
+\label{subsec:test-env}
+
+We built a browser-based test bench to compare algorithms and configurations 
+under the same conditions. It runs the same WebAssembly module as the application.
+Each test is a JSON file with an input, an expected result, and optionally its 
+own configuration. The bench can run two configurations side by side on the same 
+tests.
+
+\todo[inline]{Add screenshot of the test bench.}
+
+\subsection{Test types}
+
+\begin{itemize}
+	\item \textbf{Pitch detection:} synthetic sine waves at known frequencies, from a 
+	single note (A4, 440\,Hz) to all 120 notes from C0 to B9.
+	\item \textbf{Audio recognition:} real instrument recordings with a known sequence 
+	of notes. \todo[inline]{add some more details (instruments use, etc)}
+	\item \textbf{Score tracking:} checks that the cursor ends at the expected position 
+	of the score, within a tolerance. \todo[inline]{add some more details}
+\end{itemize}
+
+The score-following logic is also covered by unit tests in Rust. They check that the 
+cursor moves to each played note, stays still when the input is silent, ignores notes 
+that are not in the score, skips rests and stops at the end of the score.
+
+\subsection{Configurations}
+
+\todo[inline]{Add table comparing configurations, link to algorithms section, 
+maybe a screenshot of test bench}
+
+[Table with the configurations compared] The algorithms are FFT peak, FFT peak 
+with harmonics, HPS, HPS with harmonics and YIN 
+(Section~\ref{sec:key-algorithms}), combined with the windows of Section~\ref{subsec:win-fun}.
+
+
+\subsection{Metrics}
+
+\begin{table}[H]
+	\centering
+	\begin{tabularx}{\textwidth}{l Y}
+		\toprule
+		\textbf{Metric}					& \textbf{Definition} \\
+		\midrule
+		Note accuracy					& Notes whose most frequent detection is the expected note. \\
+		Window accuracy					& Analysis windows that detect the expected note. \\
+		Precision, recall, F1			& Per expected note, averaged over notes. \\
+		Detection rate					& Notes where any pitch was detected. \\
+		Mean / median error 			& Absolute pitch error, in cents [cite]. \\
+		Within $\pm$10 / $\pm$50 cents 	& Notes detected within that error. \\
+		Octave error rate				& Right pitch class, wrong octave. \\
+		\bottomrule
+	\end{tabularx}
+	\caption{Metrics used in the technical evaluation.}
+	\label{tab:metrics}
+\end{table}
+
+\todo[inline]{add citation here for cents}
+
+\subsection{Results}
+
+\todo[inline]{explain test bench results, add screenshots of test bench}
+
+\section{User evaluation}
 
 \subsection{Participants}
 
-\subsection{Test environment}
-
-\textit{Here explain about the development of the testing environment to compare different algorithms and configurations.}
-
-\textit{Talk about the 3 types of tests (sinewave, audio recognition and cursor matching).}
+[Number, instrument, level, age range]
 
 \subsection{Evaluation tasks}
 
+[What each participant does (load a score, play, ...)]
+
 \subsection{Procedure}
+
+[Where, how long, devices used, ...]
+
+THe questionnaire is in Appendix~\ref{ap:cuestionario}
+
+\subsection{Results}
+
+\section{Discussion}
+
+[Findings and limitations of the evaluation]
