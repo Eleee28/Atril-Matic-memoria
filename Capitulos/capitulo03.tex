@@ -1,5 +1,7 @@
 \chapter{Development}
 
+\section{Requirements}
+
 \subsection{Functional requirements}
 
 \subsection{Non-functional requirements}
@@ -109,7 +111,45 @@ format was designed to be fast to validate and compile, and the engine then
 translates it to machine code and runs it inside a sandbox that confines it
 to its own linear memory~\cite{haas2017bringing}.
 
-\subsection{System architecture overview}
+\section{System Design}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.9\textwidth]{AtrilInfrastructureDiagram.png}
+  \caption{Atril system infrastructure.}
+  \label{fig:atril-infrastructure}
+\end{figure}
+
+\subsection{AudioForge}
+
+AudioForge is the external service used by Atril to turn PDF scores into machine-readable MusicXML. Its implementation is a Go web service that wraps the Audiveris optical music recognition engine and exposes an HTTP API for uploading a PDF, checking conversion status, and downloading the resulting MusicXML files as a ZIP archive~\cite{audiforge}. This allows Atril to keep optical music recognition outside the client and backend while still obtaining structured score data for rendering and tracking.
+
+\subsection{Modules and Their Roles}
+
+Atril consists of the frontend, the backend, and the WASM library. To convert PDF scores into MusicXML files, which the frontend uses to both render and process musical scores, Atril contacts Audioforge via its public API. The resulting submission ID is polled until completion, and the result is then downloaded as a \texttt{.zip} file from the GET endpoint, extracted, and used by the frontend.
+
+The frontend handles the communication with Audioforge, the rendering of the UI, the re-rendering after the cursor updates supplied by the backend, and the microphone input from the user, which it passes to the backend to be processed by the WASM library.
+
+The backend, in turn, exposes endpoints for the frontend: one to send the initial full note track for the WASM library to acquire, and another so that microphone data can be given to the library and a cursor position returned to the frontend. The backend also drives the WASM library, calling its constructor, feeding it the entire note track at initialization, and subsequently feeding it the microphone data acquired by the frontend.
+
+The WASM library comprises the following:
+\begin{itemize}
+    \item the centralised \texttt{lib.rs} file, which contains the \texttt{wasm-bindgen} functions used to communicate with the backend;
+    \item the pitch detector module, which handles the FFT operations and note pitch detection from microphone data;
+    \item the Note Track module, which stores the entire score and uses the note data processed by the pitch detector to return predicted cursor positions.
+\end{itemize}
+
+\subsection{Audioforge Workflow}
+
+After the PDF file is validated and loaded with \texttt{loadFile()}, the frontend calls \texttt{convertPdfToMusicXML()}. \texttt{uploadPdf()} calls the necessary Audioforge endpoint to establish a conversion job, receiving an ID in return. \texttt{waitForConversion()} polls the job using another endpoint, providing the ID, until its status indicates completion. The \texttt{.zip} file is acquired through a third endpoint with \texttt{downloadMusicXML()} and then extracted with \texttt{extractMusicXmlFromMxl()}, which opens it in JSZip. The result is passed to \texttt{load\_score()}, which then starts posting the score to the backend.
+
+\subsection{Loading Scores into the Backend}
+
+\texttt{initNotes()} starts by establishing a sample rate and FFT size, builds the notes array to be passed to the backend, and sends the notes using a POST endpoint. The notes are validated in \texttt{tracking.js}. \texttt{fftService.initialize()} creates the WASM library type by calling its constructor and feeds it the notes array data using \texttt{add\_track\_json()}. The library handles parsing the JSON into the types it uses internally.
+
+\subsection{Microphone Data to Cursor Position Loop}
+
+The frontend sets up an audio context and, at 100\,ms intervals, sends microphone data to the backend via the \texttt{/listened-audio} POST endpoint. \texttt{tracking.js} validates each byte, and the WASM library's \texttt{cursor\_location\_from\_mic\_input()} returns the cursor position as an \texttt{Option<u32>} position in the score. The backend returns a millisecond timestamp with a confidence interval. \texttt{followTimestampMs()} in the frontend moves the cursor position to match the returned values.
 
 \subsection{Database design -- we dont have DB!}
 
